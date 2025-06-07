@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>My weird way of texturing a pc monitor | Snoozeds&#39; Blog</title>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../../../css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <!-- 添加代码高亮样式 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+  <!-- 添加highlight.js库 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <!-- 添加mermaid.js库 -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="../../../../css/code.css">
+  <link rel="stylesheet" href="../../../../css/code-custom.css">
+  <link rel="stylesheet" href="../../../../css/code-languages.css">
+  <link rel="stylesheet" href="../../../../css/mermaid.css">
+
+  <link rel="stylesheet" href="../../../../css/vscode.css">
+  <link rel="stylesheet" href="../../../../css/post.css">
+  <link rel="stylesheet" href="../../../../css/tag.css">
+  <link rel="stylesheet" href="../../../../css/categories.css">
+  <link rel="stylesheet" href="../../../../css/archive.css">
+  <link rel="stylesheet" href="../../../../css/search.css">
+  <link rel="stylesheet" href="../../../../css/mobile.css">  <link rel="stylesheet" href="../../../../css/responsive.css">
+  <link rel="stylesheet" href="../../../../css/elements.css">
+
+  <!-- 添加 JetBrains Mono 字体 -->  
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Add any custom head content here -->
+
+  <script src="../../../../js/explorer.js"></script>
+  <script src="../../../../js/code-copy.js"></script>
+  <script src="../../../../js/code-enhance.js"></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    <div class="wrapper">
+      <div class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+      <header class="vs-header">
+  <nav class="vs-nav">
+    <div class="nav-left">
+      <a href="/" class="nav-brand">
+        <i class="fas fa-terminal"></i>
+        Snoozeds&#39; Blog
+      </a>
+    </div>
+    
+    <div class="nav-right">
+      <a href="/" class="nav-item ">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="/archives/" class="nav-item ">
+        <i class="fas fa-archive"></i>
+        <span>Archives</span>
+      </a>
+      <a href="/categories/" class="nav-item ">
+        <i class="fas fa-folder"></i>
+        <span>Categories</span>
+      </a>
+      <a href="/tags/" class="nav-item ">
+        <i class="fas fa-tags"></i>
+        <span>Tags</span>
+      </a>
+      <a href="/search/" class="nav-item ">
+        <i class="fas fa-search"></i>
+        <span>Search</span>
+      </a>
+      <a href="/about/" class="nav-item ">
+        <i class="fas fa-info-circle"></i>
+        <span>About</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  function smoothScroll(event, target) {
+    event.preventDefault();
+    const targetId = target.substring(target.indexOf('#') + 1);
+    const targetElement = document.getElementById(targetId);
+
+    if (targetElement) {
+      window.scrollTo({
+        top: targetElement.offsetTop - 50, // 调整偏移量
+        behavior: 'smooth'
+      });
+    } else {
+      window.location.href = target;
+    }
+  }
+
+  window.addEventListener('scroll', function() {
+    const header = document.querySelector('.vs-header');
+    const nav = document.querySelector('.vs-nav');
+    const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    
+    nav.style.setProperty('--scroll-percent', `${scrollPercent}%`);
+    
+    if (window.scrollY > 0) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+
+  // 添加标签页切换动画
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+      const ripple = document.createElement('span');
+      ripple.classList.add('nav-ripple');
+      this.appendChild(ripple);
+      
+      const rect = this.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      
+      setTimeout(() => ripple.remove(), 1000);
+    });
+  });
+</script>
+
+
+<div class="vscode-container">
+  <!-- 左侧资源管理器 -->
+  <div class="sidebar-explorer">
+    <!-- TOC导航 -->
+    <div class="explorer-section">
+      <div class="section-header">
+        <i class="fas fa-list"></i>
+        <span>TABLE OF CONTENTS</span>
+      </div>
+      <div class="section-content">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Making-the-models"><span class="toc-text">Making the models</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Making-a-screen-texture"><span class="toc-text">Making a screen texture</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Afterword"><span class="toc-text">Afterword</span></a></li></ol>
+      </div>
+    </div>
+    
+    <!-- 同分类文章 -->
+    
+    
+    <!-- 标签列表 -->
+    
+    <div class="explorer-section">
+      <div class="section-header">
+        <i class="fas fa-tags"></i>
+        <span>ARTICLE TAGS</span>
+      </div>
+      <div class="section-content">
+        
+          <div class="tag-item">
+            <i class="fas fa-tag"></i>
+            <a href="../../../../tags/iron-pulse/">iron pulse</a>
+            <span class="count">(1)</span>
+          </div>
+        
+          <div class="tag-item">
+            <i class="fas fa-tag"></i>
+            <a href="../../../../tags/modeling/">modeling</a>
+            <span class="count">(1)</span>
+          </div>
+        
+          <div class="tag-item">
+            <i class="fas fa-tag"></i>
+            <a href="../../../../tags/texturing/">texturing</a>
+            <span class="count">(1)</span>
+          </div>
+        
+          <div class="tag-item">
+            <i class="fas fa-tag"></i>
+            <a href="../../../../tags/ui-design/">ui design</a>
+            <span class="count">(1)</span>
+          </div>
+        
+          <div class="tag-item">
+            <i class="fas fa-tag"></i>
+            <a href="../../../../tags/game-design/">game design</a>
+            <span class="count">(1)</span>
+          </div>
+        
+          <div class="tag-item">
+            <i class="fas fa-tag"></i>
+            <a href="../../../../tags/avalonia/">avalonia</a>
+            <span class="count">(1)</span>
+          </div>
+        
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- 主要内容区域 -->
+  <div class="editor-content">
+    <div class="tab-bar">
+      <div class="tab active">
+        <i class="fas fa-file-alt"></i>
+        <span>My weird way of texturing a pc monitor.md</span>
+      </div>
+    </div>
+    
+    <div class="content-area">
+      <article class="post-content">
+        <div class="post-header">
+          <h1>My weird way of texturing a pc monitor</h1>
+          <div class="post-meta">
+            <span class="date">
+              <i class="fas fa-calendar-alt"></i>
+              2025-06-07
+            </span>            
+            
+              <span class="tags">
+                <i class="fas fa-tags"></i>
+                <div class="tags-list">
+                  <ul class="tag-item-post-list" itemprop="keywords"><li class="tag-item-post-list-item"><a class="tag-item-post-list-link" href="../../../../tags/avalonia/" rel="tag">avalonia</a></li><li class="tag-item-post-list-item"><a class="tag-item-post-list-link" href="../../../../tags/game-design/" rel="tag">game design</a></li><li class="tag-item-post-list-item"><a class="tag-item-post-list-link" href="../../../../tags/iron-pulse/" rel="tag">iron pulse</a></li><li class="tag-item-post-list-item"><a class="tag-item-post-list-link" href="../../../../tags/modeling/" rel="tag">modeling</a></li><li class="tag-item-post-list-item"><a class="tag-item-post-list-link" href="../../../../tags/texturing/" rel="tag">texturing</a></li><li class="tag-item-post-list-item"><a class="tag-item-post-list-link" href="../../../../tags/ui-design/" rel="tag">ui design</a></li></ul>
+                </div>
+              </span>
+            
+
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              7 min. read
+            </span>
+          </div>
+        </div>
+        
+        <div class="post-body vscode-markdown">
+          <p>Recently, I took a break from the game I’ve been working on, <strong>Iron Pulse</strong>. After this break, I decided it’s best to start working on a simple model to get used to things again. And thus, I decided I wanted to make some 3d models of some monitors. The level I want to work on has a police department that is in need of some props for its offices anyways.</p>
+<h1 id="Making-the-models"><a href="#Making-the-models" class="headerlink" title="Making the models"></a>Making the models</h1><p>I wanted to make 2 different monitors: one based off a 27” monitor, and one based off a 57” monitor. This meant that I could have some desks use the larger monitors, some the smaller one and also use that for multi monitor setups.</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Generic 27” monitor I used as a reference: <img src="/2025/06/07/monitor-texture/27_in_ref.png" alt="An image of a flat, 27 inch monitor." title="27 inch monitor"></td>
+<td align="center">Samsung’s 57” monitor I used as a reference:<img src="/2025/06/07/monitor-texture/57_in_ref.png" alt="An image of a slightly curved, 57 inch monitor." title="57 inch monitor"></td>
+</tr>
+</tbody></table>
+<p>I tried to make the first model look as close to the original as possible, as I quite liked the look, it’s the kind of office monitor you see everywhere, though the stand is a <em>tiny</em> bit unique. I decided to make the stand a brushed aluminum kind of texture, though.</p>
+<p>For the 2nd model, I decided to make the stand a bit different. Mainly because it was easier. It ended up having a trapezoid like base which I quite liked.</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">First model: <img src="/2025/06/07/monitor-texture/27_in_model.png" alt="A 3D model of a computer monitor. It has a flat, green screen, with a wide bottom bezel. It is mounted to a thin rectangular stand that has a flat, rectangular base. It has a brushed aluminum texture."></td>
+<td align="center">Second model: <img src="/2025/06/07/monitor-texture/57_in_model.png" alt="A 3D model of a computer monitor. It has a slightly curved, green screen. It is mounted to a trapazoid stand that has a slightly raised trapezoid base."></td>
+</tr>
+</tbody></table>
+<h1 id="Making-a-screen-texture"><a href="#Making-a-screen-texture" class="headerlink" title="Making a screen texture"></a>Making a screen texture</h1><p>Now for something actually difficult, I had to decide what to actually display on the monitors.</p>
+<p>Earlier that day, I had made a new company for the billboard ads seen in game. I called it ‘ConformityOS’, with the tagline: ‘Use us because everyone else does.’<br><em>No, this is totally not referencing any real company.</em></p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ConformityOS logo: <img src="/2025/06/07/monitor-texture/conformity_os.png" alt="A corporate logo, with a logo at the top with the text &quot;OS&quot; inside the letter C. At the bottom, there&#39;s text that reads &quot;Use us because everyone else does.&quot; The background is a pink gradient that smoothly fades to block at the center."></td>
+<td align="center">Billboards seen in-game: <img src="/2025/06/07/monitor-texture/billboard_preview.png" alt="An image showing the billboards inside the game&#39;s 3D world. Multiple are visible on the walls, including one displaying the ConformityOS logo. "></td>
+</tr>
+</tbody></table>
+<p>Very convenient to use as a fake company that makes an operating system to be displayed on the monitors.</p>
+<p>I’ve been making these textures for my game mainly in Photoshop. However, I’m not the best at using Photoshop, I’ll admit. For the screen textures, I thought it’d be hard to make elements line up exactly how I wanted them to.</p>
+<p>I pondered for a while and came up with the ‘great’ idea of making an entire application for this purpose. I’ve made a couple C# apps in the past using <a target="_blank" rel="noopener" href="https://avaloniaui.net/">Avalonia</a>.</p>
+<p>I wanted to make a few screen textures:</p>
+<ul>
+<li>A simple login screen.</li>
+<li>Multiple textures of entering a password for animation.</li>
+<li>A login screen asking you to touch a USB security key.</li>
+<li>A screen that says the account is locked due to too many incorrect password attempts.</li>
+</ul>
+<p>With my amazing approach, this took… a few hours, and a whole lot of iterations. Avalonia sure can be both a blessing and a curse sometimes.</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Basic layout. <img src="/2025/06/07/monitor-texture/cos_preview_1.png"></td>
+<td align="center">Adjusted login button. <img src="/2025/06/07/monitor-texture/cos_preview_2.png"></td>
+</tr>
+<tr>
+<td align="center">Increased scale, changed colours. <img src="/2025/06/07/monitor-texture/cos_preview_3.png"></td>
+<td align="center">Removed username, too much scale. <img src="/2025/06/07/monitor-texture/cos_preview_4.png"></td>
+</tr>
+<tr>
+<td align="center">Final version. <img src="/2025/06/07/monitor-texture/cos_preview_5.png"></td>
+<td align="center">Account locked screen. Obscure reference to how permanent Xbox 360 bans used to be until 12&#x2F;31&#x2F;9999. <img src="/2025/06/07/monitor-texture/cos_preview_6.png"></td>
+</tr>
+<tr>
+<td align="center">Security key screen. <img src="/2025/06/07/monitor-texture/cos_preview_7.png"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>At first, I added hidden buttons that appeared when you hovered in the top right, these buttons let you display the different screens, and I’d manually take a screenshot each time. This ended up getting really annoying as time went on and was kind of jank.</p>
+<p>And so I eventually made a function that did this for me whenever I hit F2, which also took… an amount of time to develop. With this, I could also create that typing animation that I wanted.</p>
+<p>I’m still not the most experienced with Blender, and am an amature at best. Technically I have been using it since ~2.79b (2018), just before the UI update, but very on and off. I had never properly used an atlas texture before, and it was perfect for this project. I found editing the UVs of the ultrawide monitor at quite hard at first with that curve, but got there in the end.</p>
+<p><img src="/2025/06/07/monitor-texture/uv.png"></p>
+<h1 id="Afterword"><a href="#Afterword" class="headerlink" title="Afterword"></a>Afterword</h1><p>This is a classic example of being a developer where you try and code something that you <em>think</em> will save you time, and you <em>think</em> will be easier, and… it’s usually the opposite of course.</p>
+<p>What have I learned? I have learned that I can make awesome UI in Avalonia still.<br>Would I do it again? Yeah, probably. I think it was fun to do, and it helped refresh some of the skills I needed. It’s also more natural for me to do textures that are similar to UI this way as of now, which is kind of a funny situation to be in.</p>
+
+        </div>
+        
+        <!-- 文章导航 -->
+        <nav class="post-nav">
+          
+          
+        </nav>
+      </article>
+    </div>
+  </div>
+</div>
+
+    </div>
+    <footer class="footer">
+  <div class="status-bar">
+    <div class="status-item">
+      <i class="fas fa-code-branch"></i>
+      master
+    </div>
+    <div class="status-item">
+      <i class="fas fa-sync"></i>
+      Snoozeds
+    </div>
+    <div class="status-item">
+      <i class="fas fa-clock"></i>
+      2025-06-07
+    </div>
+    <div class="status-item">
+      Designed By&nbsp; <a href="https://github.com/B143KC47" target="_blank"> BlackCat</a>
+    </div>
+    <div class="status-item github">
+      <a href="#" target="_blank">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+    
+    <!-- 全局配置 -->
+    <script>
+      window.HEXO_CONFIG = {
+        language: "en",
+        root: "/"
+      };
+      
+      // 特定于搜索的配置
+      window.VSC4T_SEARCH = {
+        root: "/"
+      };
+    </script>
+    
+    <script src="//cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/highlight.js@11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <!-- 这里可以放置自定义脚本 -->
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  // Apply smooth scroll to non-TOC anchor links
+  document.querySelectorAll('a[href^="#"]:not(.toc-link)').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      // Check if querySelector is valid before using it
+      try {
+        const targetSelector = this.getAttribute('href');
+        // Basic check for potentially invalid selectors (though not exhaustive)
+        if (targetSelector && targetSelector.length > 1) { 
+          const targetElement = document.querySelector(targetSelector);
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth'
+            });
+          } else {
+            console.warn('Smooth scroll target not found:', targetSelector);
+          }
+        } else {
+           console.warn('Invalid href for smooth scroll:', targetSelector);
+        }
+      } catch (error) {
+        console.error('Error during smooth scroll:', error, 'Selector:', this.getAttribute('href'));
+        // Fallback or alternative behavior if needed
+        // For example, try getElementById if it's just an ID
+        const targetId = this.getAttribute('href').slice(1);
+        try {
+            const targetElementById = document.getElementById(decodeURIComponent(targetId));
+            if (targetElementById) {
+                targetElementById.scrollIntoView({ behavior: 'smooth' });
+            }
+        } catch (idError) {
+             console.error('Fallback getElementById also failed:', idError);
+        }
+      }
+    });
+  });
+});
+</script>
+<script src="../../../../js/toc.js"></script>
+
+<!-- Scripts -->
+<script>
+  // 将语言文件中的翻译传递给前端
+  window.HEXO_CONFIG = {
+    language: "en",
+    search_placeholder: "Type to search...",
+    search_no_results: "No results found",
+    search_result: "result",
+    search_results: "results",
+    search_results_found: "Found undefined results",
+    search_in: "Search in",
+    search_in_title: "Title",
+    search_in_content: "Content",
+    search_in_tags: "Tags",
+    search_in_categories: "Categories",
+    search_filters: "Search Filters",
+    search_recent: "Recent Searches",
+    search_clear: "Clear",
+    search_loading: "Loading...",
+    search_error: "Error loading search data"
+  };
+</script>
+
+
+
+<!-- 添加所有需要的脚本 -->
+<script src="../../../../js/main.js"></script>
+<script src="../../../../js/search.js"></script>
+
+
+    <script>
+      // 移动端菜单切换
+      $(document).ready(function() {
+        $('.mobile-menu-toggle').click(function() {
+          $('.sidebar-explorer').toggleClass('show');
+        });
+      });
+    </script>
+  </body>
+</html>
